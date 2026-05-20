@@ -21,10 +21,7 @@ class Jogador:
     def criar_copia(cls, outro_jogador):
         return copy.copy(outro_jogador)
 
-
     #PROPRIEDADES
-
-
     @property
     def nome(self):
         return self.__nome
@@ -57,20 +54,18 @@ class Jogador:
         self.__lvl = max(0, valor)  # nível nunca negativo, >0
 
     #MEDODOS_PUBLICOS
-
     def estaVivo(self): #verifica se o boneco está vivo
         if self.hp > 0:
             return True
         else: 
             return False
-        
+        pass
     def exibirStatus(self):
         if self.estaVivo():
             print(f"|NOME: {self.nome}|HP: {self.hp}/{self.__hp_maximo} |Level: {self.__lvl}|")
         else:
             print(f"|GAMEOVER: {self.nome} ESTÁ MORTO!|")
-
-        
+    
     def receberDano(self, dano):
         if self.estaVivo():
             self.hp -=dano #mexe no hp com setter, protegido
@@ -101,3 +96,50 @@ class Jogador:
 
     def __del__(self):#destrutora do objeto Jogador .
         print(f"Jogador {self.__nome} removido.")
+
+
+#IMPLEMENTAÇÃO DAS SUBCLASSES
+class Raca(Jogador): #subclasse de jogador, com a adição da raça do personagem.
+    def __init__(self, nome, lvl=1, hpmaximo = 100, raca="Humano"):
+        super().__init__(nome, lvl, hpmaximo)
+        self.__raca = raca
+
+    @property
+    def raca(self):
+        return self.__raca
+    
+    @raca.setter
+    def raca(self, valor):
+        self.__raca = valor
+
+class Elfo(Raca):
+    pass
+
+class Anao(Raca):
+    pass
+
+class Orc(Raca):
+    pass
+
+class Classejogador(Jogador): #subclasse de jogador, com a adição da classe do personagem.
+    def __init__(self, nome, lvl=1, hpmaximo = 100, classe="Guerreiro"):
+        super().__init__(nome, lvl, hpmaximo)
+        self.__classe = classe
+
+    @property
+    def classe(self):
+        return self.__classe
+    
+    @classe.setter
+    def classe(self, valor):
+        self.__classe = valor
+
+class Guerreiro(Classejogador):
+    pass
+
+class Mago(Classejogador):
+    pass
+
+class Arqueiro(Classejogador):
+    pass
+

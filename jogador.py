@@ -1,21 +1,27 @@
 import copy
 class Jogador:
-    def __init__(self, nome, lvl=1, hpmaximo = 100):
+    def __init__(self, nome, classe, raca, lvl=1, hpmaximo = 100, inteligencia=0, agilidade=0, forca=0, sorratez=0):
         self.__nome = nome
         self.__lvl = lvl #incializa com level 1
+        self.__classe = classe
+        self.__raca = raca
         self.__xp = 0
         self.__xp_sobenivel = lvl*10 #cada nivel precisa de mais xp pra upar. ex: lvl 1 = 10xp, lvl 2 = 20xp, lvl 3 = 30xp
         self.__hp_maximo = hpmaximo
         self.__hp = self.__hp_maximo #incializa com o hp cheio
+        self.__inteligencia = inteligencia
+        self.__agilidade = agilidade
+        self.__forca = forca
+        self.__sorratez = sorratez
         
     # CONSTRUTORES
     @classmethod
-    def criar_iniciante(cls, nome):
-        return cls(nome, lvl=1, hpmaximo=100)
+    def criar_iniciante(cls, nome, classe, raca):
+        return cls(nome, classe, raca, lvl=1, hpmaximo=100)
 
     @classmethod
-    def criar_veterano(cls, nome):
-        return cls(nome, lvl=10, hpmaximo=300)
+    def criar_veterano(cls, nome, classe, raca):
+        return cls(nome, classe, raca, lvl=10, hpmaximo=300)
 
     @classmethod
     def criar_copia(cls, outro_jogador):
@@ -32,7 +38,6 @@ class Jogador:
     @property
     def hp(self):
         return self.__hp
-    
     @hp.setter
     def hp(self, valor):
         self.__hp = max(0, min(self.__hp_maximo, valor))  # entre 0 e hp_maximo
@@ -40,7 +45,6 @@ class Jogador:
     @property
     def xp(self):
         return self.__xp
-    
     @xp.setter
     def xp(self,xp):
         self.__xp = xp
@@ -48,18 +52,44 @@ class Jogador:
     @property
     def lvl(self):
         return self.__lvl
-    
     @lvl.setter
     def lvl(self, valor):
-        self.__lvl = max(0, valor)  # nível nunca negativo, >0
+        self.__lvl = max(1, valor)  # nível nunca negativo, >0
 
+    @property
+    def inteligencia(self):
+        return self.__inteligencia
+    @inteligencia.setter
+    def inteligencia(self,inteligencia):
+        self.__inteligencia = inteligencia
+
+    @property
+    def agilidade(self):
+        return self.__agilidade
+    @agilidade.setter
+    def agilidade(self,agilidade):
+        self.__agilidade = agilidade
+
+    @property
+    def forca(self):
+        return self.__forca
+    @forca.setter
+    def forca(self,forca):
+        self.__forca = forca
+
+    @property
+    def sorratez(self):
+        return self.__sorratez
+    @sorratez.setter
+    def sorratez(self,sorratez):
+        self.__sorratez = sorratez
     #MEDODOS_PUBLICOS
     def estaVivo(self): #verifica se o boneco está vivo
         if self.hp > 0:
             return True
         else: 
             return False
-        pass
+        
     def exibirStatus(self):
         if self.estaVivo():
             print(f"|NOME: {self.nome}|HP: {self.hp}/{self.__hp_maximo} |Level: {self.__lvl}|")
@@ -70,6 +100,8 @@ class Jogador:
         if self.estaVivo():
             self.hp -=dano #mexe no hp com setter, protegido
             print(f"{self.nome} recebeu {dano} de dano!\n")
+            if self.estaVivo() == False:
+                print(f"{self.nome} Morreu!")
         
     def curar(self, cura):
         if self.estaVivo():
@@ -99,47 +131,25 @@ class Jogador:
 
 
 #IMPLEMENTAÇÃO DAS SUBCLASSES
-class Raca(Jogador): #subclasse de jogador, com a adição da raça do personagem.
-    def __init__(self, nome, lvl=1, hpmaximo = 100, raca="Humano"):
-        super().__init__(nome, lvl, hpmaximo)
-        self.__raca = raca
 
-    @property
-    def raca(self):
-        return self.__raca
-    
-    @raca.setter
-    def raca(self, valor):
-        self.__raca = valor
-
-class Elfo(Raca):
+#RAÇAS QUE O OBJETO JOGADOR PODE TER
+class Elfo(Jogador):
     pass
 
-class Anao(Raca):
+class Anao(Jogador):
     pass
 
-class Orc(Raca):
+class Orc(Jogador):
     pass
 
-class Classejogador(Jogador): #subclasse de jogador, com a adição da classe do personagem.
-    def __init__(self, nome, lvl=1, hpmaximo = 100, classe="Guerreiro"):
-        super().__init__(nome, lvl, hpmaximo)
-        self.__classe = classe
+#CLASSES QUE O OBJETO JOGADOR POR TER.
 
-    @property
-    def classe(self):
-        return self.__classe
-    
-    @classe.setter
-    def classe(self, valor):
-        self.__classe = valor
-
-class Guerreiro(Classejogador):
+class Guerreiro(Jogador):
     pass
 
-class Mago(Classejogador):
+class Mago(Jogador):
     pass
 
-class Arqueiro(Classejogador):
+class Arqueiro(Jogador):
     pass
 
